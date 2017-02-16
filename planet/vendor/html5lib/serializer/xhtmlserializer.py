@@ -1,5 +1,6 @@
 from htmlserializer import HTMLSerializer
 
+
 class XHTMLSerializer(HTMLSerializer):
     quote_attr_values = True
     minimize_boolean_attributes = False

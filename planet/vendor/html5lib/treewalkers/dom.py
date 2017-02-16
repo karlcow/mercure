@@ -6,7 +6,9 @@ _ = gettext.gettext
 import _base
 from html5lib.constants import voidElements
 
+
 class TreeWalker(_base.NonRecursiveTreeWalker):
+
     def getNodeDetails(self, node):
         if node.nodeType == Node.DOCUMENT_TYPE_NODE:
             return _base.DOCTYPE, node.name, node.publicId, node.systemId
@@ -15,7 +17,7 @@ class TreeWalker(_base.NonRecursiveTreeWalker):
             return _base.TEXT, node.nodeValue
 
         elif node.nodeType == Node.ELEMENT_NODE:
-            return (_base.ELEMENT, node.namespaceURI, node.nodeName, 
+            return (_base.ELEMENT, node.namespaceURI, node.nodeName,
                     node.attributes.items(), node.hasChildNodes)
 
         elif node.nodeType == Node.COMMENT_NODE:

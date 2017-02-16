@@ -1,4 +1,4 @@
-""" 
+"""
 HTML parsing library based on the WHATWG "HTML5"
 specification. The parser is designed to be compatible with existing
 HTML found in the wild and implements well-defined error recovery that
@@ -8,7 +8,7 @@ Example usage:
 
 import html5lib
 f = open("my_document.html")
-tree = html5lib.parse(f) 
+tree = html5lib.parse(f)
 """
 __version__ = "%(version)s"
 from html5parser import HTMLParser, parse, parseFragment

@@ -1,4 +1,5 @@
-import string, gettext
+import string
+import gettext
 _ = gettext.gettext
 
 try:
@@ -11,259 +12,259 @@ except NameError:
 EOF = None
 
 E = {
-    "null-character": 
-       _(u"Null character in input stream, replaced with U+FFFD."),
-    "invalid-character": 
-       _(u"Invalid codepoint in stream."),
+    "null-character":
+    _(u"Null character in input stream, replaced with U+FFFD."),
+    "invalid-character":
+    _(u"Invalid codepoint in stream."),
     "incorrectly-placed-solidus":
-       _(u"Solidus (/) incorrectly placed in tag."),
+    _(u"Solidus (/) incorrectly placed in tag."),
     "incorrect-cr-newline-entity":
-       _(u"Incorrect CR newline entity, replaced with LF."),
+    _(u"Incorrect CR newline entity, replaced with LF."),
     "illegal-windows-1252-entity":
-       _(u"Entity used with illegal number (windows-1252 reference)."),
+    _(u"Entity used with illegal number (windows-1252 reference)."),
     "cant-convert-numeric-entity":
-       _(u"Numeric entity couldn't be converted to character "
-         u"(codepoint U+%(charAsInt)08x)."),
+    _(u"Numeric entity couldn't be converted to character "
+      u"(codepoint U+%(charAsInt)08x)."),
     "illegal-codepoint-for-numeric-entity":
-       _(u"Numeric entity represents an illegal codepoint: "
-         u"U+%(charAsInt)08x."),
+    _(u"Numeric entity represents an illegal codepoint: "
+      u"U+%(charAsInt)08x."),
     "numeric-entity-without-semicolon":
-       _(u"Numeric entity didn't end with ';'."),
+    _(u"Numeric entity didn't end with ';'."),
     "expected-numeric-entity-but-got-eof":
-       _(u"Numeric entity expected. Got end of file instead."),
+    _(u"Numeric entity expected. Got end of file instead."),
     "expected-numeric-entity":
-       _(u"Numeric entity expected but none found."),
+    _(u"Numeric entity expected but none found."),
     "named-entity-without-semicolon":
-       _(u"Named entity didn't end with ';'."),
+    _(u"Named entity didn't end with ';'."),
     "expected-named-entity":
-       _(u"Named entity expected. Got none."),
+    _(u"Named entity expected. Got none."),
     "attributes-in-end-tag":
-       _(u"End tag contains unexpected attributes."),
+    _(u"End tag contains unexpected attributes."),
     "expected-tag-name-but-got-right-bracket":
-       _(u"Expected tag name. Got '>' instead."),
+    _(u"Expected tag name. Got '>' instead."),
     "expected-tag-name-but-got-question-mark":
-       _(u"Expected tag name. Got '?' instead. (HTML doesn't "
-         u"support processing instructions.)"),
+    _(u"Expected tag name. Got '?' instead. (HTML doesn't "
+      u"support processing instructions.)"),
     "expected-tag-name":
-       _(u"Expected tag name. Got something else instead"),
+    _(u"Expected tag name. Got something else instead"),
     "expected-closing-tag-but-got-right-bracket":
-       _(u"Expected closing tag. Got '>' instead. Ignoring '</>'."),
+    _(u"Expected closing tag. Got '>' instead. Ignoring '</>'."),
     "expected-closing-tag-but-got-eof":
-       _(u"Expected closing tag. Unexpected end of file."),
+    _(u"Expected closing tag. Unexpected end of file."),
     "expected-closing-tag-but-got-char":
-       _(u"Expected closing tag. Unexpected character '%(data)s' found."),
+    _(u"Expected closing tag. Unexpected character '%(data)s' found."),
     "eof-in-tag-name":
-       _(u"Unexpected end of file in the tag name."),
+    _(u"Unexpected end of file in the tag name."),
     "expected-attribute-name-but-got-eof":
-       _(u"Unexpected end of file. Expected attribute name instead."),
+    _(u"Unexpected end of file. Expected attribute name instead."),
     "eof-in-attribute-name":
-       _(u"Unexpected end of file in attribute name."),
+    _(u"Unexpected end of file in attribute name."),
     "invalid-character-in-attribute-name":
         _(u"Invalid chracter in attribute name"),
     "duplicate-attribute":
-       _(u"Dropped duplicate attribute on tag."),
+    _(u"Dropped duplicate attribute on tag."),
     "expected-end-of-tag-name-but-got-eof":
-       _(u"Unexpected end of file. Expected = or end of tag."),
+    _(u"Unexpected end of file. Expected = or end of tag."),
     "expected-attribute-value-but-got-eof":
-       _(u"Unexpected end of file. Expected attribute value."),
+    _(u"Unexpected end of file. Expected attribute value."),
     "expected-attribute-value-but-got-right-bracket":
-       _(u"Expected attribute value. Got '>' instead."),
+    _(u"Expected attribute value. Got '>' instead."),
     "eof-in-attribute-value-double-quote":
-       _(u"Unexpected end of file in attribute value (\")."),
+    _(u"Unexpected end of file in attribute value (\")."),
     "eof-in-attribute-value-single-quote":
-       _(u"Unexpected end of file in attribute value (')."),
+    _(u"Unexpected end of file in attribute value (')."),
     "eof-in-attribute-value-no-quotes":
-       _(u"Unexpected end of file in attribute value."),
+    _(u"Unexpected end of file in attribute value."),
     "unexpected-EOF-after-solidus-in-tag":
         _(u"Unexpected end of file in tag. Expected >"),
     "unexpected-character-after-soldius-in-tag":
         _(u"Unexpected character after / in tag. Expected >"),
     "expected-dashes-or-doctype":
-       _(u"Expected '--' or 'DOCTYPE'. Not found."),
+    _(u"Expected '--' or 'DOCTYPE'. Not found."),
     "incorrect-comment":
-       _(u"Incorrect comment."),
+    _(u"Incorrect comment."),
     "eof-in-comment":
-       _(u"Unexpected end of file in comment."),
+    _(u"Unexpected end of file in comment."),
     "eof-in-comment-end-dash":
-       _(u"Unexpected end of file in comment (-)"),
+    _(u"Unexpected end of file in comment (-)"),
     "unexpected-dash-after-double-dash-in-comment":
-       _(u"Unexpected '-' after '--' found in comment."),
+    _(u"Unexpected '-' after '--' found in comment."),
     "eof-in-comment-double-dash":
-       _(u"Unexpected end of file in comment (--)."),
+    _(u"Unexpected end of file in comment (--)."),
     "unexpected-char-in-comment":
-       _(u"Unexpected character in comment found."),
+    _(u"Unexpected character in comment found."),
     "need-space-after-doctype":
-       _(u"No space after literal string 'DOCTYPE'."),
+    _(u"No space after literal string 'DOCTYPE'."),
     "expected-doctype-name-but-got-right-bracket":
-       _(u"Unexpected > character. Expected DOCTYPE name."),
+    _(u"Unexpected > character. Expected DOCTYPE name."),
     "expected-doctype-name-but-got-eof":
-       _(u"Unexpected end of file. Expected DOCTYPE name."),
+    _(u"Unexpected end of file. Expected DOCTYPE name."),
     "eof-in-doctype-name":
-       _(u"Unexpected end of file in DOCTYPE name."),
+    _(u"Unexpected end of file in DOCTYPE name."),
     "eof-in-doctype":
-       _(u"Unexpected end of file in DOCTYPE."),
+    _(u"Unexpected end of file in DOCTYPE."),
     "expected-space-or-right-bracket-in-doctype":
-       _(u"Expected space or '>'. Got '%(data)s'"),
+    _(u"Expected space or '>'. Got '%(data)s'"),
     "unexpected-end-of-doctype":
-       _(u"Unexpected end of DOCTYPE."),
+    _(u"Unexpected end of DOCTYPE."),
     "unexpected-char-in-doctype":
-       _(u"Unexpected character in DOCTYPE."),
+    _(u"Unexpected character in DOCTYPE."),
     "eof-in-innerhtml":
-       _(u"XXX innerHTML EOF"),
+    _(u"XXX innerHTML EOF"),
     "unexpected-doctype":
-       _(u"Unexpected DOCTYPE. Ignored."),
+    _(u"Unexpected DOCTYPE. Ignored."),
     "non-html-root":
-       _(u"html needs to be the first start tag."),
+    _(u"html needs to be the first start tag."),
     "expected-doctype-but-got-eof":
-       _(u"Unexpected End of file. Expected DOCTYPE."),
+    _(u"Unexpected End of file. Expected DOCTYPE."),
     "unknown-doctype":
-       _(u"Erroneous DOCTYPE."),
+    _(u"Erroneous DOCTYPE."),
     "expected-doctype-but-got-chars":
-       _(u"Unexpected non-space characters. Expected DOCTYPE."),
+    _(u"Unexpected non-space characters. Expected DOCTYPE."),
     "expected-doctype-but-got-start-tag":
-       _(u"Unexpected start tag (%(name)s). Expected DOCTYPE."),
+    _(u"Unexpected start tag (%(name)s). Expected DOCTYPE."),
     "expected-doctype-but-got-end-tag":
-       _(u"Unexpected end tag (%(name)s). Expected DOCTYPE."),
+    _(u"Unexpected end tag (%(name)s). Expected DOCTYPE."),
     "end-tag-after-implied-root":
-       _(u"Unexpected end tag (%(name)s) after the (implied) root element."),
+    _(u"Unexpected end tag (%(name)s) after the (implied) root element."),
     "expected-named-closing-tag-but-got-eof":
-       _(u"Unexpected end of file. Expected end tag (%(name)s)."),
+    _(u"Unexpected end of file. Expected end tag (%(name)s)."),
     "two-heads-are-not-better-than-one":
-       _(u"Unexpected start tag head in existing head. Ignored."),
+    _(u"Unexpected start tag head in existing head. Ignored."),
     "unexpected-end-tag":
-       _(u"Unexpected end tag (%(name)s). Ignored."),
+    _(u"Unexpected end tag (%(name)s). Ignored."),
     "unexpected-start-tag-out-of-my-head":
-       _(u"Unexpected start tag (%(name)s) that can be in head. Moved."),
+    _(u"Unexpected start tag (%(name)s) that can be in head. Moved."),
     "unexpected-start-tag":
-       _(u"Unexpected start tag (%(name)s)."),
+    _(u"Unexpected start tag (%(name)s)."),
     "missing-end-tag":
-       _(u"Missing end tag (%(name)s)."),
+    _(u"Missing end tag (%(name)s)."),
     "missing-end-tags":
-       _(u"Missing end tags (%(name)s)."),
+    _(u"Missing end tags (%(name)s)."),
     "unexpected-start-tag-implies-end-tag":
-       _(u"Unexpected start tag (%(startName)s) "
-         u"implies end tag (%(endName)s)."),
+    _(u"Unexpected start tag (%(startName)s) "
+      u"implies end tag (%(endName)s)."),
     "unexpected-start-tag-treated-as":
-       _(u"Unexpected start tag (%(originalName)s). Treated as %(newName)s."),
+    _(u"Unexpected start tag (%(originalName)s). Treated as %(newName)s."),
     "deprecated-tag":
-       _(u"Unexpected start tag %(name)s. Don't use it!"),
+    _(u"Unexpected start tag %(name)s. Don't use it!"),
     "unexpected-start-tag-ignored":
-       _(u"Unexpected start tag %(name)s. Ignored."),
+    _(u"Unexpected start tag %(name)s. Ignored."),
     "expected-one-end-tag-but-got-another":
-       _(u"Unexpected end tag (%(gotName)s). "
-         u"Missing end tag (%(expectedName)s)."),
+    _(u"Unexpected end tag (%(gotName)s). "
+      u"Missing end tag (%(expectedName)s)."),
     "end-tag-too-early":
-       _(u"End tag (%(name)s) seen too early. Expected other end tag."),
+    _(u"End tag (%(name)s) seen too early. Expected other end tag."),
     "end-tag-too-early-named":
-       _(u"Unexpected end tag (%(gotName)s). Expected end tag (%(expectedName)s)."),
+    _(u"Unexpected end tag (%(gotName)s). Expected end tag (%(expectedName)s)."),
     "end-tag-too-early-ignored":
-       _(u"End tag (%(name)s) seen too early. Ignored."),
+    _(u"End tag (%(name)s) seen too early. Ignored."),
     "adoption-agency-1.1":
-       _(u"End tag (%(name)s) violates step 1, "
-         u"paragraph 1 of the adoption agency algorithm."),
+    _(u"End tag (%(name)s) violates step 1, "
+      u"paragraph 1 of the adoption agency algorithm."),
     "adoption-agency-1.2":
-       _(u"End tag (%(name)s) violates step 1, "
-         u"paragraph 2 of the adoption agency algorithm."),
+    _(u"End tag (%(name)s) violates step 1, "
+      u"paragraph 2 of the adoption agency algorithm."),
     "adoption-agency-1.3":
-       _(u"End tag (%(name)s) violates step 1, "
-         u"paragraph 3 of the adoption agency algorithm."),
+    _(u"End tag (%(name)s) violates step 1, "
+      u"paragraph 3 of the adoption agency algorithm."),
     "unexpected-end-tag-treated-as":
-       _(u"Unexpected end tag (%(originalName)s). Treated as %(newName)s."),
+    _(u"Unexpected end tag (%(originalName)s). Treated as %(newName)s."),
     "no-end-tag":
-       _(u"This element (%(name)s) has no end tag."),
+    _(u"This element (%(name)s) has no end tag."),
     "unexpected-implied-end-tag-in-table":
-       _(u"Unexpected implied end tag (%(name)s) in the table phase."),
+    _(u"Unexpected implied end tag (%(name)s) in the table phase."),
     "unexpected-implied-end-tag-in-table-body":
-       _(u"Unexpected implied end tag (%(name)s) in the table body phase."),
+    _(u"Unexpected implied end tag (%(name)s) in the table body phase."),
     "unexpected-char-implies-table-voodoo":
-       _(u"Unexpected non-space characters in "
-         u"table context caused voodoo mode."),
+    _(u"Unexpected non-space characters in "
+      u"table context caused voodoo mode."),
     "unexpected-hidden-input-in-table":
-       _(u"Unexpected input with type hidden in table context."),
+    _(u"Unexpected input with type hidden in table context."),
     "unexpected-form-in-table":
-       _(u"Unexpected form in table context."),
+    _(u"Unexpected form in table context."),
     "unexpected-start-tag-implies-table-voodoo":
-       _(u"Unexpected start tag (%(name)s) in "
-         u"table context caused voodoo mode."),
+    _(u"Unexpected start tag (%(name)s) in "
+      u"table context caused voodoo mode."),
     "unexpected-end-tag-implies-table-voodoo":
-       _(u"Unexpected end tag (%(name)s) in "
-         u"table context caused voodoo mode."),
+    _(u"Unexpected end tag (%(name)s) in "
+      u"table context caused voodoo mode."),
     "unexpected-cell-in-table-body":
-       _(u"Unexpected table cell start tag (%(name)s) "
-         u"in the table body phase."),
+    _(u"Unexpected table cell start tag (%(name)s) "
+      u"in the table body phase."),
     "unexpected-cell-end-tag":
-       _(u"Got table cell end tag (%(name)s) "
-         u"while required end tags are missing."),
+    _(u"Got table cell end tag (%(name)s) "
+      u"while required end tags are missing."),
     "unexpected-end-tag-in-table-body":
-       _(u"Unexpected end tag (%(name)s) in the table body phase. Ignored."),
+    _(u"Unexpected end tag (%(name)s) in the table body phase. Ignored."),
     "unexpected-implied-end-tag-in-table-row":
-       _(u"Unexpected implied end tag (%(name)s) in the table row phase."),
+    _(u"Unexpected implied end tag (%(name)s) in the table row phase."),
     "unexpected-end-tag-in-table-row":
-       _(u"Unexpected end tag (%(name)s) in the table row phase. Ignored."),
+    _(u"Unexpected end tag (%(name)s) in the table row phase. Ignored."),
     "unexpected-select-in-select":
-       _(u"Unexpected select start tag in the select phase "
-         u"treated as select end tag."),
+    _(u"Unexpected select start tag in the select phase "
+      u"treated as select end tag."),
     "unexpected-input-in-select":
-       _(u"Unexpected input start tag in the select phase."),
+    _(u"Unexpected input start tag in the select phase."),
     "unexpected-start-tag-in-select":
-       _(u"Unexpected start tag token (%(name)s in the select phase. "
-         u"Ignored."),
+    _(u"Unexpected start tag token (%(name)s in the select phase. "
+      u"Ignored."),
     "unexpected-end-tag-in-select":
-       _(u"Unexpected end tag (%(name)s) in the select phase. Ignored."),
+    _(u"Unexpected end tag (%(name)s) in the select phase. Ignored."),
     "unexpected-table-element-start-tag-in-select-in-table":
-       _(u"Unexpected table element start tag (%(name)s) in the select in table phase."),
+    _(u"Unexpected table element start tag (%(name)s) in the select in table phase."),
     "unexpected-table-element-end-tag-in-select-in-table":
-       _(u"Unexpected table element end tag (%(name)s) in the select in table phase."),
+    _(u"Unexpected table element end tag (%(name)s) in the select in table phase."),
     "unexpected-char-after-body":
-       _(u"Unexpected non-space characters in the after body phase."),
+    _(u"Unexpected non-space characters in the after body phase."),
     "unexpected-start-tag-after-body":
-       _(u"Unexpected start tag token (%(name)s)"
-         u" in the after body phase."),
+    _(u"Unexpected start tag token (%(name)s)"
+      u" in the after body phase."),
     "unexpected-end-tag-after-body":
-       _(u"Unexpected end tag token (%(name)s)"
-         u" in the after body phase."),
+    _(u"Unexpected end tag token (%(name)s)"
+      u" in the after body phase."),
     "unexpected-char-in-frameset":
-       _(u"Unepxected characters in the frameset phase. Characters ignored."),
+    _(u"Unepxected characters in the frameset phase. Characters ignored."),
     "unexpected-start-tag-in-frameset":
-       _(u"Unexpected start tag token (%(name)s)"
-         u" in the frameset phase. Ignored."),
+    _(u"Unexpected start tag token (%(name)s)"
+      u" in the frameset phase. Ignored."),
     "unexpected-frameset-in-frameset-innerhtml":
-       _(u"Unexpected end tag token (frameset) "
-         u"in the frameset phase (innerHTML)."),
+    _(u"Unexpected end tag token (frameset) "
+      u"in the frameset phase (innerHTML)."),
     "unexpected-end-tag-in-frameset":
-       _(u"Unexpected end tag token (%(name)s)"
-         u" in the frameset phase. Ignored."),
+    _(u"Unexpected end tag token (%(name)s)"
+      u" in the frameset phase. Ignored."),
     "unexpected-char-after-frameset":
-       _(u"Unexpected non-space characters in the "
-         u"after frameset phase. Ignored."),
+    _(u"Unexpected non-space characters in the "
+      u"after frameset phase. Ignored."),
     "unexpected-start-tag-after-frameset":
-       _(u"Unexpected start tag (%(name)s)"
-         u" in the after frameset phase. Ignored."),
+    _(u"Unexpected start tag (%(name)s)"
+      u" in the after frameset phase. Ignored."),
     "unexpected-end-tag-after-frameset":
-       _(u"Unexpected end tag (%(name)s)"
-         u" in the after frameset phase. Ignored."),
+    _(u"Unexpected end tag (%(name)s)"
+      u" in the after frameset phase. Ignored."),
     "unexpected-end-tag-after-body-innerhtml":
-       _(u"Unexpected end tag after body(innerHtml)"),
+    _(u"Unexpected end tag after body(innerHtml)"),
     "expected-eof-but-got-char":
-       _(u"Unexpected non-space characters. Expected end of file."),
+    _(u"Unexpected non-space characters. Expected end of file."),
     "expected-eof-but-got-start-tag":
-       _(u"Unexpected start tag (%(name)s)"
-         u". Expected end of file."),
+    _(u"Unexpected start tag (%(name)s)"
+      u". Expected end of file."),
     "expected-eof-but-got-end-tag":
-       _(u"Unexpected end tag (%(name)s)"
-         u". Expected end of file."),
+    _(u"Unexpected end tag (%(name)s)"
+      u". Expected end of file."),
     "eof-in-table":
-       _(u"Unexpected end of file. Expected table content."),
+    _(u"Unexpected end of file. Expected table content."),
     "eof-in-select":
-       _(u"Unexpected end of file. Expected select content."),
+    _(u"Unexpected end of file. Expected select content."),
     "eof-in-frameset":
-       _(u"Unexpected end of file. Expected frameset content."),
+    _(u"Unexpected end of file. Expected frameset content."),
     "eof-in-script-in-script":
-       _(u"Unexpected end of file. Expected script content."),
+    _(u"Unexpected end of file. Expected script content."),
     "non-void-element-with-trailing-solidus":
-       _(u"Trailing solidus not allowed on element %(name)s"),
+    _(u"Trailing solidus not allowed on element %(name)s"),
     "unexpected-html-element-in-foreign-content":
-       _(u"Element %(name)s not allowed in a non-html context"),
+    _(u"Element %(name)s not allowed in a non-html context"),
     "unexpected-end-tag-before-html":
         _(u"Unexpected end tag (%(name)s) before html."),
     "XXX-undefined-error":
@@ -271,12 +272,12 @@ E = {
 }
 
 namespaces = {
-    "html":"http://www.w3.org/1999/xhtml",
-    "mathml":"http://www.w3.org/1998/Math/MathML",
-    "svg":"http://www.w3.org/2000/svg",
-    "xlink":"http://www.w3.org/1999/xlink",
-    "xml":"http://www.w3.org/XML/1998/namespace",
-    "xmlns":"http://www.w3.org/2000/xmlns/"
+    "html": "http://www.w3.org/1999/xhtml",
+    "mathml": "http://www.w3.org/1998/Math/MathML",
+    "svg": "http://www.w3.org/2000/svg",
+    "xlink": "http://www.w3.org/1999/xlink",
+    "xml": "http://www.w3.org/XML/1998/namespace",
+    "xmlns": "http://www.w3.org/2000/xmlns/"
 }
 
 scopingElements = frozenset((
@@ -352,7 +353,7 @@ specialElements = frozenset((
     (namespaces["html"], "iframe"),
     # Note that image is commented out in the spec as "this isn't an
     # element that can end up on the stack, so it doesn't matter,"
-    (namespaces["html"], "image"), 
+    (namespaces["html"], "image"),
     (namespaces["html"], "img"),
     (namespaces["html"], "input"),
     (namespaces["html"], "isindex"),
@@ -409,8 +410,8 @@ asciiLetters = frozenset(string.ascii_letters)
 digits = frozenset(string.digits)
 hexDigits = frozenset(string.hexdigits)
 
-asciiUpper2Lower = dict([(ord(c),ord(c.lower()))
-    for c in string.ascii_uppercase])
+asciiUpper2Lower = dict([(ord(c), ord(c.lower()))
+                         for c in string.ascii_uppercase])
 
 # Heading elements need to be ordered
 headingElements = (
@@ -455,8 +456,8 @@ booleanAttributes = {
     "": frozenset(("irrelevant",)),
     "style": frozenset(("scoped",)),
     "img": frozenset(("ismap",)),
-    "audio": frozenset(("autoplay","controls")),
-    "video": frozenset(("autoplay","controls")),
+    "audio": frozenset(("autoplay", "controls")),
+    "video": frozenset(("autoplay", "controls")),
     "script": frozenset(("defer", "async")),
     "details": frozenset(("open",)),
     "datagrid": frozenset(("multiple", "disabled")),
@@ -475,7 +476,7 @@ booleanAttributes = {
 # therefore can't be a frozenset.
 entitiesWindows1252 = (
     8364,  # 0x80  0x20AC  EURO SIGN
-    65533, # 0x81          UNDEFINED
+    65533,  # 0x81          UNDEFINED
     8218,  # 0x82  0x201A  SINGLE LOW-9 QUOTATION MARK
     402,   # 0x83  0x0192  LATIN SMALL LETTER F WITH HOOK
     8222,  # 0x84  0x201E  DOUBLE LOW-9 QUOTATION MARK
@@ -487,10 +488,10 @@ entitiesWindows1252 = (
     352,   # 0x8A  0x0160  LATIN CAPITAL LETTER S WITH CARON
     8249,  # 0x8B  0x2039  SINGLE LEFT-POINTING ANGLE QUOTATION MARK
     338,   # 0x8C  0x0152  LATIN CAPITAL LIGATURE OE
-    65533, # 0x8D          UNDEFINED
+    65533,  # 0x8D          UNDEFINED
     381,   # 0x8E  0x017D  LATIN CAPITAL LETTER Z WITH CARON
-    65533, # 0x8F          UNDEFINED
-    65533, # 0x90          UNDEFINED
+    65533,  # 0x8F          UNDEFINED
+    65533,  # 0x90          UNDEFINED
     8216,  # 0x91  0x2018  LEFT SINGLE QUOTATION MARK
     8217,  # 0x92  0x2019  RIGHT SINGLE QUOTATION MARK
     8220,  # 0x93  0x201C  LEFT DOUBLE QUOTATION MARK
@@ -503,7 +504,7 @@ entitiesWindows1252 = (
     353,   # 0x9A  0x0161  LATIN SMALL LETTER S WITH CARON
     8250,  # 0x9B  0x203A  SINGLE RIGHT-POINTING ANGLE QUOTATION MARK
     339,   # 0x9C  0x0153  LATIN SMALL LIGATURE OE
-    65533, # 0x9D          UNDEFINED
+    65533,  # 0x9D          UNDEFINED
     382,   # 0x9E  0x017E  LATIN SMALL LETTER Z WITH CARON
     376    # 0x9F  0x0178  LATIN CAPITAL LETTER Y WITH DIAERESIS
 )
@@ -880,41 +881,41 @@ entities = {
 }
 
 replacementCharacters = {
-    0x0:u"\uFFFD",
-    0x0d:u"\u000A",
-    0x80:u"\u20AC",
-    0x81:u"\u0081",
-    0x81:u"\u0081",
-    0x82:u"\u201A",
-    0x83:u"\u0192",
-    0x84:u"\u201E",
-    0x85:u"\u2026",
-    0x86:u"\u2020",
-    0x87:u"\u2021",
-    0x88:u"\u02C6",
-    0x89:u"\u2030",
-    0x8A:u"\u0160",
-    0x8B:u"\u2039",
-    0x8C:u"\u0152",
-    0x8D:u"\u008D",
-    0x8E:u"\u017D",
-    0x8F:u"\u008F",
-    0x90:u"\u0090",
-    0x91:u"\u2018",
-    0x92:u"\u2019",
-    0x93:u"\u201C",
-    0x94:u"\u201D",
-    0x95:u"\u2022",
-    0x96:u"\u2013",
-    0x97:u"\u2014",
-    0x98:u"\u02DC",
-    0x99:u"\u2122",
-    0x9A:u"\u0161",
-    0x9B:u"\u203A",
-    0x9C:u"\u0153",
-    0x9D:u"\u009D",
-    0x9E:u"\u017E",
-    0x9F:u"\u0178",
+    0x0: u"\uFFFD",
+    0x0d: u"\u000A",
+    0x80: u"\u20AC",
+    0x81: u"\u0081",
+    0x81: u"\u0081",
+    0x82: u"\u201A",
+    0x83: u"\u0192",
+    0x84: u"\u201E",
+    0x85: u"\u2026",
+    0x86: u"\u2020",
+    0x87: u"\u2021",
+    0x88: u"\u02C6",
+    0x89: u"\u2030",
+    0x8A: u"\u0160",
+    0x8B: u"\u2039",
+    0x8C: u"\u0152",
+    0x8D: u"\u008D",
+    0x8E: u"\u017D",
+    0x8F: u"\u008F",
+    0x90: u"\u0090",
+    0x91: u"\u2018",
+    0x92: u"\u2019",
+    0x93: u"\u201C",
+    0x94: u"\u201D",
+    0x95: u"\u2022",
+    0x96: u"\u2013",
+    0x97: u"\u2014",
+    0x98: u"\u02DC",
+    0x99: u"\u2122",
+    0x9A: u"\u0161",
+    0x9B: u"\u203A",
+    0x9C: u"\u0153",
+    0x9D: u"\u009D",
+    0x9E: u"\u017E",
+    0x9F: u"\u0178",
 }
 
 encodings = {
@@ -1147,25 +1148,27 @@ encodings = {
     'x-x-big5': 'big5'}
 
 tokenTypes = {
-    "Doctype":0,
-    "Characters":1,
-    "SpaceCharacters":2,
-    "StartTag":3,
-    "EndTag":4,
-    "EmptyTag":5,
-    "Comment":6,
-    "ParseError":7
+    "Doctype": 0,
+    "Characters": 1,
+    "SpaceCharacters": 2,
+    "StartTag": 3,
+    "EndTag": 4,
+    "EmptyTag": 5,
+    "Comment": 6,
+    "ParseError": 7
 }
 
-tagTokenTypes = frozenset((tokenTypes["StartTag"], tokenTypes["EndTag"], 
+tagTokenTypes = frozenset((tokenTypes["StartTag"], tokenTypes["EndTag"],
                            tokenTypes["EmptyTag"]))
 
 
-prefixes = dict([(v,k) for k,v in namespaces.iteritems()])
+prefixes = dict([(v, k) for k, v in namespaces.iteritems()])
 prefixes["http://www.w3.org/1998/Math/MathML"] = "math"
+
 
 class DataLossWarning(UserWarning):
     pass
+
 
 class ReparseException(Exception):
     pass

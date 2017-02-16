@@ -12,23 +12,26 @@ spaceCharacters = u"".join(spaceCharacters)
 
 SPACES_REGEX = re.compile(u"[%s]+" % spaceCharacters)
 
+
 class Filter(_base.Filter):
 
-    spacePreserveElements = frozenset(["pre", "textarea"] + list(rcdataElements))
+    spacePreserveElements = frozenset(
+        ["pre", "textarea"] + list(rcdataElements))
 
     def __iter__(self):
         preserve = 0
         for token in _base.Filter.__iter__(self):
             type = token["type"]
-            if type == "StartTag" \
-              and (preserve or token["name"] in self.spacePreserveElements):
+            if type == "StartTag" and (
+                    preserve or token["name"] in self.spacePreserveElements):
                 preserve += 1
 
             elif type == "EndTag" and preserve:
                 preserve -= 1
 
             elif not preserve and type == "SpaceCharacters" and token["data"]:
-                # Test on token["data"] above to not introduce spaces where there were not
+                # Test on token["data"] above to not introduce spaces where
+                # there were not
                 token["data"] = u" "
 
             elif not preserve and type == "Characters":
@@ -36,6 +39,6 @@ class Filter(_base.Filter):
 
             yield token
 
+
 def collapse_spaces(text):
     return SPACES_REGEX.sub(' ', text)
-

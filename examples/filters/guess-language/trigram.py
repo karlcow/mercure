@@ -8,11 +8,12 @@
     It has been (slightly) adapted by Eric van der Vlist to support
     Unicode and accept a method to parse strings.
 """
-__authors__ = [ "Douglas Bagnall", "Eric van der Vlist <vdv@dyomedea.com>"]
+__authors__ = ["Douglas Bagnall", "Eric van der Vlist <vdv@dyomedea.com>"]
 __license__ = "Python"
 
 import random
 from urllib import urlopen
+
 
 class Trigram:
     """
@@ -68,38 +69,37 @@ class Trigram:
             self.parseFile(fn)
 
     def _parseAFragment(self, line, pair='  '):
-	for letter in line:
-	    d = self.lut.setdefault(pair, {})
+        for letter in line:
+            d = self.lut.setdefault(pair, {})
             d[letter] = d.get(letter, 0) + 1
             pair = pair[1] + letter
-	return pair
+        return pair
 
     def parseString(self, string):
-	self._parseAFragment(string)
+        self._parseAFragment(string)
         self.measure()
-    
+
     def parseFile(self, fn, encoding="iso-8859-1"):
         pair = '  '
         if '://' in fn:
-            #print "trying to fetch url, may take time..."
+            # print "trying to fetch url, may take time..."
             f = urlopen(fn)
         else:
             f = open(fn)
         for z, line in enumerate(f):
-            #if not z % 1000:
+            # if not z % 1000:
             #    print "line %s" % z
             # \n's are spurious in a prose context
             pair = self._parseAFragment(line.strip().decode(encoding) + ' ')
         f.close()
         self.measure()
 
-
     def measure(self):
         """calculates the scalar length of the trigram vector and
         stores it in self.length."""
         total = 0
         for y in self.lut.values():
-            total += sum([ x * x for x in y.values() ])
+            total += sum([x * x for x in y.values()])
         self.length = total ** 0.5
 
     def similarity(self, other):
@@ -127,7 +127,6 @@ class Trigram:
         different, 0 is entirely the same."""
         return 1 - self.similarity(other)
 
-
     def makeWords(self, count):
         """returns a string of made-up words based on the known text."""
         text = []
@@ -139,7 +138,6 @@ class Trigram:
             if n in ' \t':
                 count -= 1
         return ''.join(text)
-
 
     def likely(self, k):
         """Returns a character likely to follow the given string
@@ -156,7 +154,7 @@ class Trigram:
 
 def test():
     en = Trigram('http://gutenberg.net/dirs/etext97/lsusn11.txt')
-   #NB fr and some others have English license text.
+   # NB fr and some others have English license text.
     #   no has english excerpts.
     fr = Trigram('http://gutenberg.net/dirs/etext03/candi10.txt')
     fi = Trigram('http://gutenberg.net/dirs/1/0/4/9/10492/10492-8.txt')

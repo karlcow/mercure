@@ -1,6 +1,8 @@
 import _base
 
+
 class Filter(_base.Filter):
+
     def __init__(self, source, encoding):
         _base.Filter.__init__(self, source)
         self.encoding = encoding
@@ -18,22 +20,24 @@ class Filter(_base.Filter):
 
             elif type == "EmptyTag":
                 if token["name"].lower() == "meta":
-                   # replace charset with actual encoding
-                   has_http_equiv_content_type = False
-                   content_index = -1
-                   for i,(name,value) in enumerate(token["data"]):
-                       if name.lower() == 'charset':
-                          token["data"][i] = (u'charset', self.encoding)
-                          meta_found = True
-                          break
-                       elif name == 'http-equiv' and value.lower() == 'content-type':
-                           has_http_equiv_content_type = True
-                       elif name == 'content':
-                           content_index = i
-                   else:
-                       if has_http_equiv_content_type and content_index >= 0:
-                           token["data"][content_index] = (u'content', u'text/html; charset=%s' % self.encoding)
-                           meta_found = True
+                    # replace charset with actual encoding
+                    has_http_equiv_content_type = False
+                    content_index = -1
+                    for i, (name, value) in enumerate(token["data"]):
+                        if name.lower() == 'charset':
+                            token["data"][i] = (u'charset', self.encoding)
+                            meta_found = True
+                            break
+                        elif name == 'http-equiv' and value.lower() == 'content-type':
+                            has_http_equiv_content_type = True
+                        elif name == 'content':
+                            content_index = i
+                    else:
+                        if has_http_equiv_content_type and content_index >= 0:
+                            token["data"][content_index] = (
+                                u'content', u'text/html; charset=%s' %
+                                self.encoding)
+                            meta_found = True
 
                 elif token["name"].lower() == "head" and not meta_found:
                     # insert meta into empty head
@@ -47,7 +51,8 @@ class Filter(_base.Filter):
 
             elif type == "EndTag":
                 if token["name"].lower() == "head" and pending:
-                    # insert meta into head (if necessary) and flush pending queue
+                    # insert meta into head (if necessary) and flush pending
+                    # queue
                     yield pending.pop(0)
                     if not meta_found:
                         yield {"type": "EmptyTag", "name": "meta",

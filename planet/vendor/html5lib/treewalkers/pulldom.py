@@ -5,13 +5,15 @@ import _base
 
 from html5lib.constants import voidElements
 
+
 class TreeWalker(_base.TreeWalker):
+
     def __iter__(self):
         ignore_until = None
         previous = None
         for event in self.tree:
             if previous is not None and \
-              (ignore_until is None or previous[1] is ignore_until):
+                    (ignore_until is None or previous[1] is ignore_until):
                 if previous[1] is ignore_until:
                     ignore_until = None
                 for token in self.tokens(previous, event):
@@ -23,7 +25,8 @@ class TreeWalker(_base.TreeWalker):
             for token in self.tokens(previous, None):
                 yield token
         elif ignore_until is not None:
-            raise ValueError("Illformed DOM event stream: void element without END_ELEMENT")
+            raise ValueError(
+                "Illformed DOM event stream: void element without END_ELEMENT")
 
     def tokens(self, event, next):
         type, node = event
@@ -33,7 +36,7 @@ class TreeWalker(_base.TreeWalker):
             if name in voidElements:
                 for token in self.emptyTag(namespace,
                                            name,
-                                           node.attributes.items(), 
+                                           node.attributes.items(),
                                            not next or next[1] is not node):
                     yield token
             else:

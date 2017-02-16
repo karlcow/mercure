@@ -11,7 +11,7 @@ parameters.
 
 Requires Python 2.1, recommends 2.4.
 """
-__authors__ = [ "Eric van der Vlist <vdv@dyomedea.com>"]
+__authors__ = ["Eric van der Vlist <vdv@dyomedea.com>"]
 __license__ = "Python"
 
 import amara
@@ -27,31 +27,33 @@ ATOM_NSS = {
 
 langs = {}
 
+
 def tri(lang):
-    if not langs.has_key(lang):
-	f = open('filters/guess-language/%s.data' % lang, 'r')
-	t = cPickle.load(f)
-	f.close()
-	langs[lang] = t
+    if lang not in langs:
+        f = open('filters/guess-language/%s.data' % lang, 'r')
+        t = cPickle.load(f)
+        f.close()
+        langs[lang] = t
     return langs[lang]
-    
+
 
 def guess_language(entry):
-    text = u'';
+    text = u''
     for child in entry.xml_xpath(u'atom:title|atom:summary|atom:content'):
-	text = text + u' '+ child.__unicode__()
+        text = text + u' ' + child.__unicode__()
     t = Trigram()
     t.parseString(text)
     if tri('fr') - t > tri('en') - t:
-	lang=u'en'
+        lang = u'en'
     else:
-	lang=u'fr'
+        lang = u'fr'
     entry.xml_set_attribute((u'xml:lang', XML_NS), lang)
+
 
 def main():
     feed = amara.parse(stdin, prefixes=ATOM_NSS)
     for entry in feed.xml_xpath(u'//atom:entry[not(@xml:lang)]'):
-	guess_language(entry)
+        guess_language(entry)
     feed.xml(stdout)
 
 if __name__ == '__main__':

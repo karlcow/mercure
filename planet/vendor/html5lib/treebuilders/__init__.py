@@ -32,12 +32,13 @@ the various methods.
 
 treeBuilderCache = {}
 
+
 def getTreeBuilder(treeType, implementation=None, **kwargs):
     """Get a TreeBuilder class for various types of tree with built-in support
-    
+
     treeType - the name of the tree type required (case-insensitive). Supported
                values are "simpletree", "dom", "etree" and "beautifulsoup"
-               
+
                "simpletree" - a built-in DOM-ish tree type with support for some
                               more pythonic idioms.
                 "dom" - A generic builder for DOM implementations, defaulting to
@@ -48,17 +49,18 @@ def getTreeBuilder(treeType, implementation=None, **kwargs):
                           elementtree-like interface (known to work with
                           ElementTree, cElementTree and lxml.etree).
                 "beautifulsoup" - Beautiful soup (if installed)
-               
+
     implementation - (Currently applies to the "etree" and "dom" tree types). A
                       module implementing the tree type e.g.
                       xml.etree.ElementTree or lxml.etree."""
-    
+
     treeType = treeType.lower()
     if treeType not in treeBuilderCache:
         if treeType == "dom":
             import dom
-            # XXX: Keep backwards compatibility by using minidom if no implementation is given
-            if implementation == None:
+            # XXX: Keep backwards compatibility by using minidom if no
+            # implementation is given
+            if implementation is None:
                 from xml.dom import minidom
                 implementation = minidom
             # XXX: NEVER cache here, caching is done in the dom submodule
@@ -74,7 +76,7 @@ def getTreeBuilder(treeType, implementation=None, **kwargs):
             treeBuilderCache[treeType] = etree_lxml.TreeBuilder
         elif treeType == "etree":
             # Come up with a sane default
-            if implementation == None:
+            if implementation is None:
                 try:
                     import xml.etree.cElementTree as ET
                 except ImportError:
@@ -90,5 +92,5 @@ def getTreeBuilder(treeType, implementation=None, **kwargs):
             # NEVER cache here, caching is done in the etree submodule
             return etree.getETreeModule(implementation, **kwargs).TreeBuilder
         else:
-            raise ValueError("""Unrecognised treebuilder "%s" """%treeType)
+            raise ValueError("""Unrecognised treebuilder "%s" """ % treeType)
     return treeBuilderCache.get(treeType)

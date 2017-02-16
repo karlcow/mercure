@@ -7,7 +7,7 @@ This utility saves a Trigram object on file.
 
 Requires Python 2.1, recommends 2.4.
 """
-__authors__ = [ "Eric van der Vlist <vdv@dyomedea.com>"]
+__authors__ = ["Eric van der Vlist <vdv@dyomedea.com>"]
 __license__ = "Python"
 
 from trigram import Trigram

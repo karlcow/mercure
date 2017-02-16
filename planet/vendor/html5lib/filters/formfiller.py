@@ -9,7 +9,9 @@ import _base
 from html5lib.constants import spaceCharacters
 spaceCharacters = u"".join(spaceCharacters)
 
+
 class SimpleFilter(_base.Filter):
+
     def __init__(self, source, fieldStorage):
         _base.Filter.__init__(self, source)
         self.fieldStorage = fieldStorage
@@ -27,7 +29,7 @@ class SimpleFilter(_base.Filter):
                     field_type = None
                     input_value_index = -1
                     input_checked_index = -1
-                    for i,(n,v) in enumerate(token["data"]):
+                    for i, (n, v) in enumerate(token["data"]):
                         n = n.lower()
                         if n == u"name":
                             field_name = v.strip(spaceCharacters)
@@ -56,7 +58,8 @@ class SimpleFilter(_base.Filter):
 
                     elif field_type not in (u"button", u"submit", u"reset"):
                         if input_value_index >= 0:
-                            token["data"][input_value_index] = (u"value", value)
+                            token["data"][input_value_index] = (
+                                u"value", value)
                         else:
                             token["data"].append((u"value", value))
                         field_indices[field_name] = field_index + 1
@@ -78,18 +81,20 @@ class SimpleFilter(_base.Filter):
                 elif field_type == "select" and field_name and name == "option":
                     option_selected_index = -1
                     option_value = None
-                    for i,(n,v) in enumerate(token["data"]):
+                    for i, (n, v) in enumerate(token["data"]):
                         n = n.lower()
                         if n == "selected":
                             option_selected_index = i
                         elif n == "value":
                             option_value = v.strip(spaceCharacters)
                     if option_value is None:
-                        raise NotImplementedError("<option>s without a value= attribute")
+                        raise NotImplementedError(
+                            "<option>s without a value= attribute")
                     else:
                         value_list = self.fieldStorage.getlist(field_name)
                         if value_list:
-                            field_index = field_indices.setdefault(field_name, 0)
+                            field_index = field_indices.setdefault(
+                                field_name, 0)
                             if field_index < len(value_list):
                                 value = value_list[field_index]
                             else:
@@ -108,7 +113,8 @@ class SimpleFilter(_base.Filter):
                     if name == "textarea":
                         value_list = self.fieldStorage.getlist(field_name)
                         if value_list:
-                            field_index = field_indices.setdefault(field_name, 0)
+                            field_index = field_indices.setdefault(
+                                field_name, 0)
                             if field_index < len(value_list):
                                 value = value_list[field_index]
                             else:
@@ -119,9 +125,9 @@ class SimpleFilter(_base.Filter):
                     field_name = None
 
                 elif name == "option" and field_type == "select":
-                    pass # TODO: part of "option without value= attribute" processing
+                    pass  # TODO: part of "option without value= attribute" processing
 
             elif field_type == "textarea":
-                continue # ignore token
+                continue  # ignore token
 
             yield token

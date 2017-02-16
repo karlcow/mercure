@@ -26,7 +26,15 @@ Copyright (C) 2001-2002 Vinay Sajip. All Rights Reserved.
 To use, simply 'import logging' and log away!
 """
 
-import sys, logging, socket, types, os, string, cPickle, struct, time
+import sys
+import logging
+import socket
+import types
+import os
+import string
+import cPickle
+import struct
+import time
 
 from SocketServer import ThreadingTCPServer, StreamRequestHandler
 
@@ -34,14 +42,15 @@ from SocketServer import ThreadingTCPServer, StreamRequestHandler
 # Some constants...
 #
 
-DEFAULT_TCP_LOGGING_PORT    = 9020
-DEFAULT_UDP_LOGGING_PORT    = 9021
-DEFAULT_HTTP_LOGGING_PORT   = 9022
-DEFAULT_SOAP_LOGGING_PORT   = 9023
-SYSLOG_UDP_PORT             = 514
+DEFAULT_TCP_LOGGING_PORT = 9020
+DEFAULT_UDP_LOGGING_PORT = 9021
+DEFAULT_HTTP_LOGGING_PORT = 9022
+DEFAULT_SOAP_LOGGING_PORT = 9023
+SYSLOG_UDP_PORT = 514
 
 
 class RotatingFileHandler(logging.FileHandler):
+
     def __init__(self, filename, mode="a", maxBytes=0, backupCount=0):
         """
         Open the specified file and use it as the stream for logging.
@@ -80,7 +89,7 @@ class RotatingFileHandler(logging.FileHandler):
                 sfn = "%s.%d" % (self.baseFilename, i)
                 dfn = "%s.%d" % (self.baseFilename, i + 1)
                 if os.path.exists(sfn):
-                    #print "%s -> %s" % (sfn, dfn)
+                    # print "%s -> %s" % (sfn, dfn)
                     if os.path.exists(dfn):
                         os.remove(dfn)
                     os.rename(sfn, dfn)
@@ -88,7 +97,7 @@ class RotatingFileHandler(logging.FileHandler):
             if os.path.exists(dfn):
                 os.remove(dfn)
             os.rename(self.baseFilename, dfn)
-            #print "%s -> %s" % (self.baseFilename, dfn)
+            # print "%s -> %s" % (self.baseFilename, dfn)
         self.stream = open(self.baseFilename, "w")
 
     def emit(self, record):
@@ -100,7 +109,8 @@ class RotatingFileHandler(logging.FileHandler):
         """
         if self.maxBytes > 0:                   # are we rolling over?
             msg = "%s\n" % self.format(record)
-            self.stream.seek(0, 2)  #due to non-posix-compliant Windows feature
+            # due to non-posix-compliant Windows feature
+            self.stream.seek(0, 2)
             if self.stream.tell() + len(msg) >= self.maxBytes:
                 self.doRollover()
         logging.FileHandler.emit(self, record)
@@ -180,7 +190,7 @@ class SocketHandler(logging.Handler):
         """
         if self.closeOnError and self.sock:
             self.sock.close()
-            self.sock = None        #try to reconnect next time
+            self.sock = None  # try to reconnect next time
         else:
             logging.Handler.handleError(self, record)
 
@@ -209,6 +219,7 @@ class SocketHandler(logging.Handler):
             self.sock.close()
             self.sock = None
 
+
 class DatagramHandler(SocketHandler):
     """
     A handler class which writes logging records, in pickle format, to
@@ -220,6 +231,7 @@ class DatagramHandler(SocketHandler):
     makeLogRecord function.
 
     """
+
     def __init__(self, host, port):
         """
         Initializes the handler with a specific host address and port.
@@ -245,6 +257,7 @@ class DatagramHandler(SocketHandler):
         """
         self.sock.sendto(s, (self.host, self.port))
 
+
 class SysLogHandler(logging.Handler):
     """
     A handler class which sends formatted logging records to a syslog
@@ -264,77 +277,82 @@ class SysLogHandler(logging.Handler):
     #
     # priorities (these are ordered)
 
-    LOG_EMERG     = 0       #  system is unusable
-    LOG_ALERT     = 1       #  action must be taken immediately
-    LOG_CRIT      = 2       #  critical conditions
-    LOG_ERR       = 3       #  error conditions
-    LOG_WARNING   = 4       #  warning conditions
-    LOG_NOTICE    = 5       #  normal but significant condition
-    LOG_INFO      = 6       #  informational
-    LOG_DEBUG     = 7       #  debug-level messages
+    LOG_EMERG = 0  # system is unusable
+    LOG_ALERT = 1  # action must be taken immediately
+    LOG_CRIT = 2  # critical conditions
+    LOG_ERR = 3  # error conditions
+    LOG_WARNING = 4  # warning conditions
+    LOG_NOTICE = 5  # normal but significant condition
+    LOG_INFO = 6  # informational
+    LOG_DEBUG = 7  # debug-level messages
 
     #  facility codes
-    LOG_KERN      = 0       #  kernel messages
-    LOG_USER      = 1       #  random user-level messages
-    LOG_MAIL      = 2       #  mail system
-    LOG_DAEMON    = 3       #  system daemons
-    LOG_AUTH      = 4       #  security/authorization messages
-    LOG_SYSLOG    = 5       #  messages generated internally by syslogd
-    LOG_LPR       = 6       #  line printer subsystem
-    LOG_NEWS      = 7       #  network news subsystem
-    LOG_UUCP      = 8       #  UUCP subsystem
-    LOG_CRON      = 9       #  clock daemon
-    LOG_AUTHPRIV  = 10  #  security/authorization messages (private)
+    LOG_KERN = 0  # kernel messages
+    LOG_USER = 1  # random user-level messages
+    LOG_MAIL = 2  # mail system
+    LOG_DAEMON = 3  # system daemons
+    LOG_AUTH = 4  # security/authorization messages
+    LOG_SYSLOG = 5  # messages generated internally by syslogd
+    LOG_LPR = 6  # line printer subsystem
+    LOG_NEWS = 7  # network news subsystem
+    LOG_UUCP = 8  # UUCP subsystem
+    LOG_CRON = 9  # clock daemon
+    LOG_AUTHPRIV = 10  # security/authorization messages (private)
 
     #  other codes through 15 reserved for system use
-    LOG_LOCAL0    = 16      #  reserved for local use
-    LOG_LOCAL1    = 17      #  reserved for local use
-    LOG_LOCAL2    = 18      #  reserved for local use
-    LOG_LOCAL3    = 19      #  reserved for local use
-    LOG_LOCAL4    = 20      #  reserved for local use
-    LOG_LOCAL5    = 21      #  reserved for local use
-    LOG_LOCAL6    = 22      #  reserved for local use
-    LOG_LOCAL7    = 23      #  reserved for local use
+    LOG_LOCAL0 = 16  # reserved for local use
+    LOG_LOCAL1 = 17  # reserved for local use
+    LOG_LOCAL2 = 18  # reserved for local use
+    LOG_LOCAL3 = 19  # reserved for local use
+    LOG_LOCAL4 = 20  # reserved for local use
+    LOG_LOCAL5 = 21  # reserved for local use
+    LOG_LOCAL6 = 22  # reserved for local use
+    LOG_LOCAL7 = 23  # reserved for local use
 
     priority_names = {
-        "alert":    LOG_ALERT,
-        "crit":     LOG_CRIT,
+        "alert": LOG_ALERT,
+        "crit": LOG_CRIT,
         "critical": LOG_CRIT,
-        "debug":    LOG_DEBUG,
-        "emerg":    LOG_EMERG,
-        "err":      LOG_ERR,
-        "error":    LOG_ERR,        #  DEPRECATED
-        "info":     LOG_INFO,
-        "notice":   LOG_NOTICE,
-        "panic":    LOG_EMERG,      #  DEPRECATED
-        "warn":     LOG_WARNING,    #  DEPRECATED
-        "warning":  LOG_WARNING,
-        }
+        "debug": LOG_DEBUG,
+        "emerg": LOG_EMERG,
+        "err": LOG_ERR,
+        "error": LOG_ERR,  # DEPRECATED
+        "info": LOG_INFO,
+        "notice": LOG_NOTICE,
+        "panic": LOG_EMERG,  # DEPRECATED
+        "warn": LOG_WARNING,  # DEPRECATED
+        "warning": LOG_WARNING,
+    }
 
     facility_names = {
-        "auth":     LOG_AUTH,
+        "auth": LOG_AUTH,
         "authpriv": LOG_AUTHPRIV,
-        "cron":     LOG_CRON,
-        "daemon":   LOG_DAEMON,
-        "kern":     LOG_KERN,
-        "lpr":      LOG_LPR,
-        "mail":     LOG_MAIL,
-        "news":     LOG_NEWS,
-        "security": LOG_AUTH,       #  DEPRECATED
-        "syslog":   LOG_SYSLOG,
-        "user":     LOG_USER,
-        "uucp":     LOG_UUCP,
-        "local0":   LOG_LOCAL0,
-        "local1":   LOG_LOCAL1,
-        "local2":   LOG_LOCAL2,
-        "local3":   LOG_LOCAL3,
-        "local4":   LOG_LOCAL4,
-        "local5":   LOG_LOCAL5,
-        "local6":   LOG_LOCAL6,
-        "local7":   LOG_LOCAL7,
-        }
+        "cron": LOG_CRON,
+        "daemon": LOG_DAEMON,
+        "kern": LOG_KERN,
+        "lpr": LOG_LPR,
+        "mail": LOG_MAIL,
+        "news": LOG_NEWS,
+        "security": LOG_AUTH,  # DEPRECATED
+        "syslog": LOG_SYSLOG,
+        "user": LOG_USER,
+        "uucp": LOG_UUCP,
+        "local0": LOG_LOCAL0,
+        "local1": LOG_LOCAL1,
+        "local2": LOG_LOCAL2,
+        "local3": LOG_LOCAL3,
+        "local4": LOG_LOCAL4,
+        "local5": LOG_LOCAL5,
+        "local6": LOG_LOCAL6,
+        "local7": LOG_LOCAL7,
+    }
 
-    def __init__(self, address=('localhost', SYSLOG_UDP_PORT), facility=LOG_USER):
+    def __init__(
+            self,
+            address=(
+                'localhost',
+                SYSLOG_UDP_PORT),
+            facility=LOG_USER):
         """
         Initialize a handler.
 
@@ -345,7 +363,7 @@ class SysLogHandler(logging.Handler):
 
         self.address = address
         self.facility = facility
-        if type(address) == types.StringType:
+        if isinstance(address, types.StringType):
             self.socket = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)
             # syslog may require either DGRAM or STREAM sockets
             try:
@@ -367,20 +385,20 @@ class SysLogHandler(logging.Handler):
     #   necessary.
     log_format_string = '<%d>%s\000'
 
-    def encodePriority (self, facility, priority):
+    def encodePriority(self, facility, priority):
         """
         Encode the facility and priority. You can pass in strings or
         integers - if strings are passed, the facility_names and
         priority_names mapping dictionaries are used to convert them to
         integers.
         """
-        if type(facility) == types.StringType:
+        if isinstance(facility, types.StringType):
             facility = self.facility_names[facility]
-        if type(priority) == types.StringType:
+        if isinstance(priority, types.StringType):
             priority = self.priority_names[priority]
         return (facility << 3) | priority
 
-    def close (self):
+    def close(self):
         """
         Closes the socket.
         """
@@ -411,10 +429,12 @@ class SysLogHandler(logging.Handler):
         except:
             self.handleError(record)
 
+
 class SMTPHandler(logging.Handler):
     """
     A handler class which sends an SMTP email for each logging event.
     """
+
     def __init__(self, mailhost, fromaddr, toaddrs, subject):
         """
         Initialize the handler.
@@ -424,7 +444,7 @@ class SMTPHandler(logging.Handler):
         (host, port) tuple format for the mailhost argument.
         """
         logging.Handler.__init__(self)
-        if type(mailhost) == types.TupleType:
+        if isinstance(mailhost, types.TupleType):
             host, port = mailhost
             self.mailhost = host
             self.mailport = port
@@ -432,7 +452,7 @@ class SMTPHandler(logging.Handler):
             self.mailhost = mailhost
             self.mailport = None
         self.fromaddr = fromaddr
-        if type(toaddrs) == types.StringType:
+        if isinstance(toaddrs, types.StringType):
             toaddrs = [toaddrs]
         self.toaddrs = toaddrs
         self.subject = subject
@@ -456,9 +476,9 @@ class SMTPHandler(logging.Handler):
         """Return the current date and time formatted for a MIME header."""
         year, month, day, hh, mm, ss, wd, y, z = time.gmtime(time.time())
         s = "%s, %02d %3s %4d %02d:%02d:%02d GMT" % (
-                self.weekdayname[wd],
-                day, self.monthname[month], year,
-                hh, mm, ss)
+            self.weekdayname[wd],
+            day, self.monthname[month], year,
+            hh, mm, ss)
         return s
 
     def emit(self, record):
@@ -475,14 +495,15 @@ class SMTPHandler(logging.Handler):
             smtp = smtplib.SMTP(self.mailhost, port)
             msg = self.format(record)
             msg = "From: %s\r\nTo: %s\r\nSubject: %s\r\nDate: %s\r\n\r\n%s" % (
-                            self.fromaddr,
-                            string.join(self.toaddrs, ","),
-                            self.getSubject(record),
-                            self.date_time(), msg)
+                self.fromaddr,
+                string.join(self.toaddrs, ","),
+                self.getSubject(record),
+                self.date_time(), msg)
             smtp.sendmail(self.fromaddr, self.toaddrs, msg)
             smtp.quit()
         except:
             self.handleError(record)
+
 
 class NTEventLogHandler(logging.Handler):
     """
@@ -494,10 +515,12 @@ class NTEventLogHandler(logging.Handler):
     If you want slimmer logs, you have to pass in the name of your own DLL
     which contains the message definitions you want to use in the event log.
     """
+
     def __init__(self, appname, dllname=None, logtype="Application"):
         logging.Handler.__init__(self)
         try:
-            import win32evtlogutil, win32evtlog
+            import win32evtlogutil
+            import win32evtlog
             self.appname = appname
             self._welu = win32evtlogutil
             if not dllname:
@@ -509,15 +532,15 @@ class NTEventLogHandler(logging.Handler):
             self._welu.AddSourceToRegistry(appname, dllname, logtype)
             self.deftype = win32evtlog.EVENTLOG_ERROR_TYPE
             self.typemap = {
-                logging.DEBUG   : win32evtlog.EVENTLOG_INFORMATION_TYPE,
-                logging.INFO    : win32evtlog.EVENTLOG_INFORMATION_TYPE,
-                logging.WARNING : win32evtlog.EVENTLOG_WARNING_TYPE,
-                logging.ERROR   : win32evtlog.EVENTLOG_ERROR_TYPE,
+                logging.DEBUG: win32evtlog.EVENTLOG_INFORMATION_TYPE,
+                logging.INFO: win32evtlog.EVENTLOG_INFORMATION_TYPE,
+                logging.WARNING: win32evtlog.EVENTLOG_WARNING_TYPE,
+                logging.ERROR: win32evtlog.EVENTLOG_ERROR_TYPE,
                 logging.CRITICAL: win32evtlog.EVENTLOG_ERROR_TYPE,
-         }
+            }
         except ImportError:
             print "The Python Win32 extensions for NT (service, event "\
-                        "logging) appear not to be available."
+                "logging) appear not to be available."
             self._welu = None
 
     def getMessageID(self, record):
@@ -582,11 +605,13 @@ class NTEventLogHandler(logging.Handler):
         #self._welu.RemoveSourceFromRegistry(self.appname, self.logtype)
         pass
 
+
 class HTTPHandler(logging.Handler):
     """
     A class which sends records to a Web server, using either GET or
     POST semantics.
     """
+
     def __init__(self, host, url, method="GET"):
         """
         Initialize the instance with the host, the request URL, and the method
@@ -595,7 +620,7 @@ class HTTPHandler(logging.Handler):
         logging.Handler.__init__(self)
         method = string.upper(method)
         if method not in ["GET", "POST"]:
-            raise ValueError, "method must be GET or POST"
+            raise ValueError("method must be GET or POST")
         self.host = host
         self.url = url
         self.method = method
@@ -615,7 +640,8 @@ class HTTPHandler(logging.Handler):
         Send the record to the Web server as an URL-encoded dictionary
         """
         try:
-            import httplib, urllib
+            import httplib
+            import urllib
             h = httplib.HTTP(self.host)
             url = self.url
             data = urllib.urlencode(self.mapLogRecord(record))
@@ -631,9 +657,10 @@ class HTTPHandler(logging.Handler):
             h.endheaders()
             if self.method == "POST":
                 h.send(data)
-            h.getreply()    #can't do anything with the result
+            h.getreply()  # can't do anything with the result
         except:
             self.handleError(record)
+
 
 class BufferingHandler(logging.Handler):
     """
@@ -641,6 +668,7 @@ class BufferingHandler(logging.Handler):
   record is added to the buffer, a check is made to see if the buffer should
   be flushed. If it should, then flush() is expected to do what's needed.
     """
+
     def __init__(self, capacity):
         """
         Initialize the handler with the buffer size.
@@ -677,12 +705,14 @@ class BufferingHandler(logging.Handler):
         """
         self.buffer = []
 
+
 class MemoryHandler(BufferingHandler):
     """
     A handler class which buffers logging records in memory, periodically
     flushing them to a target handler. Flushing occurs whenever the buffer
     is full, or when an event of a certain severity or greater is seen.
     """
+
     def __init__(self, capacity, flushLevel=logging.ERROR, target=None):
         """
         Initialize the handler with the buffer size, the level at which
@@ -700,7 +730,7 @@ class MemoryHandler(BufferingHandler):
         Check for buffer full or a record at the flushLevel or higher.
         """
         return (len(self.buffer) >= self.capacity) or \
-                (record.levelno >= self.flushLevel)
+            (record.levelno >= self.flushLevel)
 
     def setTarget(self, target):
         """

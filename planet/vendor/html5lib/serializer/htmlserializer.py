@@ -5,6 +5,7 @@ except NameError:
     from sets import ImmutableSet as frozenset
 
 import gettext
+from functools import reduce
 _ = gettext.gettext
 
 from html5lib.constants import voidElements, booleanAttributes, spaceCharacters
@@ -39,8 +40,10 @@ else:
                     skip = False
                     continue
                 index = i + exc.start
-                if utils.isSurrogatePair(exc.object[index:min([exc.end, index+2])]):
-                    codepoint = utils.surrogatePairToCodepoint(exc.object[index:index+2])
+                if utils.isSurrogatePair(
+                        exc.object[index:min([exc.end, index + 2])]):
+                    codepoint = utils.surrogatePairToCodepoint(
+                        exc.object[index:index + 2])
                     skip = True
                 else:
                     codepoint = ord(c)
@@ -53,7 +56,7 @@ else:
                     if not e.endswith(";"):
                         res.append(";")
                 else:
-                    res.append("&#x%s;"%(hex(cp)[2:]))
+                    res.append("&#x%s;" % (hex(cp)[2:]))
             return (u"".join(res), exc.end)
         else:
             return xmlcharrefreplace_errors(exc)
@@ -62,8 +65,10 @@ else:
 
     del register_error
 
+
 def encode(text, encoding):
     return text.encode(encoding, unicode_encode_errors)
+
 
 class HTMLSerializer(object):
 
@@ -89,13 +94,13 @@ class HTMLSerializer(object):
     sanitize = False
 
     options = ("quote_attr_values", "quote_char", "use_best_quote_char",
-          "minimize_boolean_attributes", "use_trailing_solidus",
-          "space_before_trailing_solidus", "omit_optional_tags",
-          "strip_whitespace", "inject_meta_charset", "escape_lt_in_attrs",
-          "escape_rcdata", "resolve_entities", "sanitize")
+               "minimize_boolean_attributes", "use_trailing_solidus",
+               "space_before_trailing_solidus", "omit_optional_tags",
+               "strip_whitespace", "inject_meta_charset", "escape_lt_in_attrs",
+               "escape_rcdata", "resolve_entities", "sanitize")
 
     def __init__(self, **kwargs):
-        if kwargs.has_key('quote_char'):
+        if 'quote_char' in kwargs:
             self.use_best_quote_char = False
         for attr in self.options:
             setattr(self, attr, kwargs.get(attr, getattr(self, attr)))
@@ -123,22 +128,24 @@ class HTMLSerializer(object):
             type = token["type"]
             if type == "Doctype":
                 doctype = u"<!DOCTYPE %s" % token["name"]
-                
+
                 if token["publicId"]:
                     doctype += u' PUBLIC "%s"' % token["publicId"]
                 elif token["systemId"]:
                     doctype += u" SYSTEM"
-                if token["systemId"]:                
+                if token["systemId"]:
                     if token["systemId"].find(u'"') >= 0:
                         if token["systemId"].find(u"'") >= 0:
-                            self.serializeError(_("System identifer contains both single and double quote characters"))
+                            self.serializeError(
+                                _("System identifer contains both single and double quote characters"))
                         quote_char = u"'"
                     else:
                         quote_char = u'"'
-                    doctype += u" %s%s%s" % (quote_char, token["systemId"], quote_char)
-                
+                    doctype += u" %s%s%s" % (quote_char,
+                                             token["systemId"], quote_char)
+
                 doctype += u">"
-                
+
                 if encoding:
                     yield doctype.encode(encoding)
                 else:
@@ -162,29 +169,32 @@ class HTMLSerializer(object):
                 if name in rcdataElements and not self.escape_rcdata:
                     in_cdata = True
                 elif in_cdata:
-                    self.serializeError(_("Unexpected child element of a CDATA element"))
+                    self.serializeError(
+                        _("Unexpected child element of a CDATA element"))
                 attrs = token["data"]
                 if hasattr(attrs, "items"):
                     attrs = attrs.items()
                 attrs.sort()
                 attributes = []
-                for k,v in attrs:
+                for k, v in attrs:
                     if encoding:
                         k = k.encode(encoding, "strict")
                     attributes.append(' ')
 
                     attributes.append(k)
                     if not self.minimize_boolean_attributes or \
-                      (k not in booleanAttributes.get(name, tuple()) \
-                      and k not in booleanAttributes.get("", tuple())):
+                        (k not in booleanAttributes.get(name, tuple())
+                         and k not in booleanAttributes.get("", tuple())):
                         attributes.append("=")
                         if self.quote_attr_values or not v:
                             quote_attr = True
                         else:
-                            quote_attr = reduce(lambda x,y: x or (y in v),
-                                spaceCharacters + ">\"'=", False)
+                            quote_attr = reduce(
+                                lambda x, y: x or (
+                                    y in v), spaceCharacters + ">\"'=", False)
                         v = v.replace("&", "&amp;")
-                        if self.escape_lt_in_attrs: v = v.replace("<", "&lt;")
+                        if self.escape_lt_in_attrs:
+                            v = v.replace("<", "&lt;")
                         if encoding:
                             v = encode(v, encoding)
                         if quote_attr:
@@ -218,7 +228,8 @@ class HTMLSerializer(object):
                 if name in rcdataElements:
                     in_cdata = False
                 elif in_cdata:
-                    self.serializeError(_("Unexpected child element of a CDATA element"))
+                    self.serializeError(
+                        _("Unexpected child element of a CDATA element"))
                 end_tag = u"</%s>" % name
                 if encoding:
                     end_tag = end_tag.encode(encoding, "strict")
@@ -236,7 +247,7 @@ class HTMLSerializer(object):
             elif type == "Entity":
                 name = token["name"]
                 key = name + ";"
-                if not key in entities:
+                if key not in entities:
                     self.serializeError(_("Entity %s not recognized" % name))
                 if self.resolve_entities and key not in xmlEntities:
                     data = entities[key]
@@ -260,6 +271,7 @@ class HTMLSerializer(object):
         self.errors.append(data)
         if self.strict:
             raise SerializeError
+
 
 def SerializeError(Exception):
     """Error in serialized tree"""

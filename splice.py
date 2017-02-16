@@ -5,7 +5,9 @@ Main program to run just the splice portion of planet
 
 import os.path
 import sys
-from planet import splice, config
+
+from planet import splice
+from planet import config
 
 if __name__ == '__main__':
 

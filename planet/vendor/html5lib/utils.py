@@ -1,9 +1,10 @@
 try:
     frozenset
 except NameError:
-    #Import from the sets module for python 2.3
+    # Import from the sets module for python 2.3
     from sets import Set as set
     from sets import ImmutableSet as frozenset
+
 
 class MethodDispatcher(dict):
     """Dict with 2 special properties:
@@ -23,7 +24,7 @@ class MethodDispatcher(dict):
         # twice as fast. Please do careful performance testing before changing
         # anything here.
         _dictEntries = []
-        for name,value in items:
+        for name, value in items:
             if type(name) in (list, tuple, frozenset, set):
                 for item in name:
                     _dictEntries.append((item, value))
@@ -35,8 +36,9 @@ class MethodDispatcher(dict):
     def __getitem__(self, key):
         return dict.get(self, key, self.default)
 
-#Pure python implementation of deque taken from the ASPN Python Cookbook
-#Original code by Raymond Hettinger
+# Pure python implementation of deque taken from the ASPN Python Cookbook
+# Original code by Raymond Hettinger
+
 
 class deque(object):
 
@@ -52,21 +54,21 @@ class deque(object):
         self.right += 1
         if self.maxsize != -1 and len(self) > self.maxsize:
             self.popleft()
-        
+
     def appendleft(self, x):
-        self.left -= 1        
+        self.left -= 1
         self.data[self.left] = x
         if self.maxsize != -1 and len(self) > self.maxsize:
-            self.pop()      
-        
+            self.pop()
+
     def pop(self):
         if self.left == self.right:
             raise IndexError('cannot pop from empty deque')
         self.right -= 1
         elem = self.data[self.right]
-        del self.data[self.right]         
+        del self.data[self.right]
         return elem
-    
+
     def popleft(self):
         if self.left == self.right:
             raise IndexError('cannot pop from empty deque')
@@ -103,7 +105,7 @@ class deque(object):
 
     def __setitem__(self, i, value):
         if i < 0:
-            i += len(self)        
+            i += len(self)
         try:
             self.data[i + self.left] = value
         except KeyError:
@@ -116,18 +118,18 @@ class deque(object):
         data = self.data
         if i < 0:
             i += size
-        for j in xrange(self.left+i, self.right-1):
-            data[j] = data[j+1]
+        for j in xrange(self.left + i, self.right - 1):
+            data[j] = data[j + 1]
         self.pop()
-    
+
     def __len__(self):
         return self.right - self.left
 
     def __cmp__(self, other):
-        if type(self) != type(other):
+        if not isinstance(self, type(other)):
             return cmp(type(self), type(other))
         return cmp(list(self), list(other))
-            
+
     def __repr__(self, _track=[]):
         if id(self) in _track:
             return '...'
@@ -135,19 +137,19 @@ class deque(object):
         r = 'deque(%r)' % (list(self),)
         _track.remove(id(self))
         return r
-    
+
     def __getstate__(self):
         return (tuple(self),)
-    
+
     def __setstate__(self, s):
         self.__init__(s[0])
-        
+
     def __hash__(self):
         raise TypeError
-    
+
     def __copy__(self):
         return self.__class__(self)
-    
+
     def __deepcopy__(self, memo={}):
         from copy import deepcopy
         result = self.__class__()
@@ -155,8 +157,9 @@ class deque(object):
         result.__init__(deepcopy(tuple(self), memo))
         return result
 
-#Some utility functions to dal with weirdness around UCS2 vs UCS4
-#python builds
+# Some utility functions to dal with weirdness around UCS2 vs UCS4
+# python builds
+
 
 def encodingType():
     if len() == 2:
@@ -164,12 +167,14 @@ def encodingType():
     else:
         return "UCS4"
 
-def isSurrogatePair(data):   
+
+def isSurrogatePair(data):
     return (len(data) == 2 and
             ord(data[0]) >= 0xD800 and ord(data[0]) <= 0xDBFF and
             ord(data[1]) >= 0xDC00 and ord(data[1]) <= 0xDFFF)
 
+
 def surrogatePairToCodepoint(data):
-    char_val = (0x10000 + (ord(data[0]) - 0xD800) * 0x400 + 
+    char_val = (0x10000 + (ord(data[0]) - 0xD800) * 0x400 +
                 (ord(data[1]) - 0xDC00))
     return char_val

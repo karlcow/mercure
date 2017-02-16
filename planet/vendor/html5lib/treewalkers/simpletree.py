@@ -3,6 +3,7 @@ _ = gettext.gettext
 
 import _base
 
+
 class TreeWalker(_base.NonRecursiveTreeWalker):
     """Given that simpletree has no performant way of getting a node's
     next sibling, this implementation returns "nodes" as tuples with the
@@ -17,32 +18,32 @@ class TreeWalker(_base.NonRecursiveTreeWalker):
     """
 
     def getNodeDetails(self, node):
-        if isinstance(node, tuple): # It might be the root Node
+        if isinstance(node, tuple):  # It might be the root Node
             parent, idx, parents = node
             node = parent.childNodes[idx]
 
         # testing node.type allows us not to import treebuilders.simpletree
-        if node.type in (1, 2): # Document or DocumentFragment
+        if node.type in (1, 2):  # Document or DocumentFragment
             return (_base.DOCUMENT,)
 
-        elif node.type == 3: # DocumentType
+        elif node.type == 3:  # DocumentType
             return _base.DOCTYPE, node.name, node.publicId, node.systemId
 
-        elif node.type == 4: # TextNode
+        elif node.type == 4:  # TextNode
             return _base.TEXT, node.value
 
-        elif node.type == 5: # Element
-            return (_base.ELEMENT, node.namespace, node.name, 
+        elif node.type == 5:  # Element
+            return (_base.ELEMENT, node.namespace, node.name,
                     node.attributes.items(), node.hasContent())
 
-        elif node.type == 6: # CommentNode
+        elif node.type == 6:  # CommentNode
             return _base.COMMENT, node.data
 
         else:
             return _node.UNKNOWN, node.type
 
     def getFirstChild(self, node):
-        if isinstance(node, tuple): # It might be the root Node
+        if isinstance(node, tuple):  # It might be the root Node
             parent, idx, parents = node
             parents.append((parent, idx))
             node = parent.childNodes[idx]
@@ -68,5 +69,6 @@ class TreeWalker(_base.NonRecursiveTreeWalker):
             parent, idx = parents.pop()
             return parent, idx, parents
         else:
-            # HACK: We could return ``parent`` but None will stop the algorithm the same way
+            # HACK: We could return ``parent`` but None will stop the algorithm
+            # the same way
             return None

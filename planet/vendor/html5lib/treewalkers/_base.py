@@ -4,7 +4,9 @@ _ = gettext.gettext
 from html5lib.constants import voidElements, spaceCharacters
 spaceCharacters = u"".join(spaceCharacters)
 
+
 class TreeWalker(object):
+
     def __init__(self, tree):
         self.tree = tree
 
@@ -19,31 +21,31 @@ class TreeWalker(object):
             attrs = []
         elif hasattr(attrs, 'items'):
             attrs = attrs.items()
-        return [(unicode(name),unicode(value)) for name,value in attrs]
+        return [(unicode(name), unicode(value)) for name, value in attrs]
 
     def emptyTag(self, namespace, name, attrs, hasChildren=False):
-        yield {"type": "EmptyTag", "name": unicode(name), 
-               "namespace":unicode(namespace),
+        yield {"type": "EmptyTag", "name": unicode(name),
+               "namespace": unicode(namespace),
                "data": self.normalizeAttrs(attrs)}
         if hasChildren:
             yield self.error(_("Void element has children"))
 
     def startTag(self, namespace, name, attrs):
-        return {"type": "StartTag", 
+        return {"type": "StartTag",
                 "name": unicode(name),
-                "namespace":unicode(namespace),
+                "namespace": unicode(namespace),
                 "data": self.normalizeAttrs(attrs)}
 
     def endTag(self, namespace, name):
-        return {"type": "EndTag", 
+        return {"type": "EndTag",
                 "name": unicode(name),
-                "namespace":unicode(namespace),
+                "namespace": unicode(namespace),
                 "data": []}
 
     def text(self, data):
         data = unicode(data)
         middle = data.lstrip(spaceCharacters)
-        left = data[:len(data)-len(middle)]
+        left = data[:len(data) - len(middle)]
         if left:
             yield {"type": "SpaceCharacters", "data": left}
         data = middle
@@ -70,7 +72,9 @@ class TreeWalker(object):
     def unknown(self, nodeType):
         return self.error(_("Unknown node type: ") + nodeType)
 
+
 class RecursiveTreeWalker(TreeWalker):
+
     def walkChildren(self, node):
         raise NodeImplementedError
 
@@ -95,16 +99,18 @@ COMMENT = Node.COMMENT_NODE
 ENTITY = Node.ENTITY_NODE
 UNKNOWN = "<#UNKNOWN#>"
 
+
 class NonRecursiveTreeWalker(TreeWalker):
+
     def getNodeDetails(self, node):
         raise NotImplementedError
-    
+
     def getFirstChild(self, node):
         raise NotImplementedError
-    
+
     def getNextSibling(self, node):
         raise NotImplementedError
-    
+
     def getParentNode(self, node):
         raise NotImplementedError
 
@@ -126,7 +132,7 @@ class NonRecursiveTreeWalker(TreeWalker):
             elif type == ELEMENT:
                 namespace, name, attributes, hasChildren = details
                 if name in voidElements:
-                    for token in self.emptyTag(namespace, name, attributes, 
+                    for token in self.emptyTag(namespace, name, attributes,
                                                hasChildren):
                         yield token
                     hasChildren = False
@@ -145,12 +151,12 @@ class NonRecursiveTreeWalker(TreeWalker):
 
             else:
                 yield self.unknown(details[0])
-            
+
             if hasChildren:
                 firstChild = self.getFirstChild(currentNode)
             else:
                 firstChild = None
-            
+
             if firstChild is not None:
                 currentNode = firstChild
             else:
